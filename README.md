@@ -2,6 +2,34 @@
 
 Sitio web completo, responsivo y optimizado para un negocio de comida casera peruana. Diseñado mobile-first con enfoque en conversión a WhatsApp.
 
+## 🚀 Despliegue en Vercel
+
+### Opción 1: Despliegue desde GitHub (Recomendado)
+
+1. Ve a [vercel.com](https://vercel.com) y crea una cuenta o inicia sesión
+2. Click en "Add New Project"
+3. Importa tu repositorio de GitHub: `DJGOX/peruflavor`
+4. Vercel detectará automáticamente que es un proyecto Next.js
+5. Click en "Deploy"
+6. ¡Listo! Tu sitio estará en línea en unos minutos
+
+### Opción 2: Despliegue desde CLI
+
+```bash
+# Instalar Vercel CLI (si no está instalado)
+npm install -g vercel
+
+# O usar npx
+npx vercel
+
+# Seguir las instrucciones en pantalla
+# - Login con tu cuenta de Vercel
+# - Seleccionar el proyecto
+# - Confirmar configuración
+```
+
+**Nota:** El token de GitHub está configurado en tu sistema para futuros pushes.
+
 ## 🚀 Características
 
 - ✅ **100% Responsive** - Diseñado mobile-first, funciona perfecto en todos los dispositivos
