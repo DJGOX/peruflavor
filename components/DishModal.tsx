@@ -44,6 +44,7 @@ export default function DishModal({ dish, isOpen, onClose }: DishModalProps) {
     'Popular': 'tag-popular',
     'Vegetariano': 'tag-vegetariano',
     'Disponible hoy': 'tag-disponible',
+    'Consultar': 'tag-consultar',
   }
 
   return (
@@ -88,11 +89,6 @@ export default function DishModal({ dish, isOpen, onClose }: DishModalProps) {
               sizes="(max-width: 768px) 100vw, 80vw"
               priority
             />
-            {dish.isDishOfTheDay && (
-              <div className="absolute top-4 left-4 bg-peru-red text-white px-4 py-2 rounded-full text-sm font-bold">
-                Plato del Día
-              </div>
-            )}
           </div>
         </div>
 
@@ -103,14 +99,20 @@ export default function DishModal({ dish, isOpen, onClose }: DishModalProps) {
             </h2>
             {dish.id === 'picarones' ? (
               <div className="text-right ml-4 whitespace-nowrap">
-                <div className="text-xl md:text-2xl font-bold text-peru-red">6 piezas: {formatPrice(12, dish.currency)}</div>
-                <div className="text-xl md:text-2xl font-bold text-peru-red">8 piezas: {formatPrice(18, dish.currency)}</div>
+                <div className="text-xl md:text-2xl font-bold text-peru-red">6 piezas: {formatPrice(dish.price!, dish.currency)}</div>
+              </div>
+            ) : dish.id === 'tallarines-rojos-huancaina' ? (
+              <div className="text-right ml-4 whitespace-nowrap space-y-1">
+                <div className="text-lg md:text-xl font-bold text-peru-red">Con cevichito (1 persona): {formatPrice(20, dish.currency)}</div>
+                <div className="text-lg md:text-xl font-bold text-peru-red">Con cevichito + chanfainita: {formatPrice(25, dish.currency)}</div>
               </div>
             ) : dish.price ? (
               <span className="text-2xl font-bold text-peru-red ml-4 whitespace-nowrap">
                 {formatPrice(dish.price, dish.currency)}
               </span>
-            ) : null}
+            ) : (
+              <span className="text-lg font-semibold text-amber-600 ml-4 whitespace-nowrap">Consultar</span>
+            )}
           </div>
 
           <div className="flex flex-wrap gap-2 mb-4 items-center">
@@ -125,7 +127,7 @@ export default function DishModal({ dish, isOpen, onClose }: DishModalProps) {
                 🗺️ {dish.peruRegion}
               </span>
             )}
-            {dish.tags.map((tag) => (
+            {dish.tags.filter(tag => tag !== 'Disponible hoy').map((tag) => (
               <span key={tag} className={tagClassMap[tag] || 'tag bg-gray-100 text-gray-800'}>
                 {tag}
               </span>
@@ -214,7 +216,7 @@ export default function DishModal({ dish, isOpen, onClose }: DishModalProps) {
             rel="noopener noreferrer"
             className="btn-primary w-full text-center text-lg py-4 block"
           >
-            Pedir por WhatsApp
+            {dish.tags?.includes('Consultar') ? 'Consultar por WhatsApp' : 'Pedir por WhatsApp'}
           </a>
         </div>
       </div>

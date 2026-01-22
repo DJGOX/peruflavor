@@ -17,23 +17,26 @@ export default function Header() {
   ]
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg shadow-lg border-b border-gray-100">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Logo />
 
-          <nav className="hidden md:flex items-center space-x-6">
+          <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-sm font-medium transition-colors ${
+                className={`text-sm font-medium relative transition-all duration-300 ${
                   pathname === item.href
                     ? 'text-peru-red'
                     : 'text-gray-700 hover:text-peru-red'
                 }`}
               >
                 {item.label}
+                <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-peru-red transform transition-all duration-300 ${
+                  pathname === item.href ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                }`}></span>
               </Link>
             ))}
           </nav>

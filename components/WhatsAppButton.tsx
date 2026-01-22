@@ -8,11 +8,12 @@ export default function WhatsAppButton() {
       href={getWhatsAppUrl(getMenuWhatsAppMessage())}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white rounded-full p-4 shadow-lg hover:bg-[#20BA5A] transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2"
+      className="fixed bottom-6 right-6 z-50 bg-gradient-to-br from-[#25D366] to-[#20BA5A] text-white rounded-full p-4 shadow-2xl hover:shadow-[#25D366]/50 transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none focus:ring-4 focus:ring-[#25D366]/50 group animate-fade-in"
       aria-label="Contactar por WhatsApp"
     >
+      <div className="absolute inset-0 rounded-full bg-white/20 transform scale-0 group-hover:scale-100 transition-transform duration-300"></div>
       <svg
-        className="w-6 h-6"
+        className="w-6 h-6 relative z-10 transform transition-transform duration-300 group-hover:rotate-12"
         fill="currentColor"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"

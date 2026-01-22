@@ -66,6 +66,47 @@ export default function MenuPage() {
     return list
   }, [availableDishes, searchQuery, regionFilters, categoryFilters])
 
+  // Categorizar platos
+  const categorizedDishes = useMemo(() => {
+    const categorizeDish = (dish: typeof availableDishes[0]) => {
+      const id = dish.id.toLowerCase()
+      const name = dish.name.toLowerCase()
+      
+      // Postres
+      if (id.includes('picarones') || 
+          id.includes('mazamorra') || 
+          name.includes('mazamorra') ||
+          (id.includes('arroz') && name.includes('leche')) ||
+          id.includes('combinado')) {
+        return 'postres'
+      }
+      
+      // Sopas
+      if (id.includes('sopa') || 
+          id.includes('caldo') || 
+          id.includes('crema') || 
+          id.includes('patasca') || 
+          id.includes('parihuela') || 
+          name.includes('sopa') || 
+          name.includes('caldo') || 
+          name.includes('crema') ||
+          name.includes('patasca') ||
+          name.includes('parihuela')) {
+        return 'sopas'
+      }
+      
+      // Platos de fondo (todo lo demás)
+      return 'platos-fondo'
+    }
+
+    const categories = {
+      sopas: filteredDishes.filter(d => categorizeDish(d) === 'sopas'),
+      'platos-fondo': filteredDishes.filter(d => categorizeDish(d) === 'platos-fondo'),
+      postres: filteredDishes.filter(d => categorizeDish(d) === 'postres'),
+    }
+    return categories
+  }, [filteredDishes])
+
   return (
     <section className="py-12 md:py-16">
       <div className="container mx-auto px-4">
@@ -106,125 +147,131 @@ export default function MenuPage() {
           </div>
         </div>
 
-        {/* Filtros: región, tipo, vista */}
-        <div className="mb-10 rounded-xl bg-gray-50 border border-gray-200 overflow-hidden">
-          {/* Header del panel de filtros - siempre visible */}
-          <button
-            type="button"
-            onClick={() => setFiltersOpen(!filtersOpen)}
-            className="w-full p-4 flex items-center justify-between hover:bg-gray-100 transition-colors"
-            aria-expanded={filtersOpen}
-            aria-controls="filters-content"
-          >
-            <div className="flex items-center gap-3">
-              <h2 className="text-lg font-bold text-gray-900">Filtros</h2>
-              {hasActiveFilters && (
-                <span className="bg-peru-red text-white text-xs font-bold px-2 py-1 rounded-full">
-                  {regionFilters.length + categoryFilters.length + (searchQuery.trim() ? 1 : 0)}
-                </span>
-              )}
-            </div>
-            <svg
-              className={`w-5 h-5 text-gray-600 transition-transform duration-200 ${filtersOpen ? 'rotate-180' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-
-          {/* Contenido de filtros - desplegable */}
-          <div
-            id="filters-content"
-            className={`transition-all duration-300 ease-in-out ${
-              filtersOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
-            }`}
-          >
-            <div className="px-6 pb-6 space-y-5">
-              <div>
-                <p className="text-sm font-semibold text-gray-700 mb-2">Región</p>
-                <div className="flex flex-wrap gap-2">
-                  {REGION_OPTIONS.map(({ value, label }) => (
-                    <button
-                      key={value}
-                      type="button"
-                      onClick={() => toggleRegion(value)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer ${
-                        regionFilters.includes(value) ? 'bg-peru-red text-white' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  ))}
+        {/* Layout: Filtros lateral (desktop) / superior (mobile) */}
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          {/* Filtros: región, tipo, vista */}
+          <div className="lg:w-80 lg:flex-shrink-0">
+            <div className="lg:sticky lg:top-4 rounded-xl bg-gray-50 border border-gray-200 overflow-hidden">
+              {/* Header del panel de filtros - siempre visible */}
+              <button
+                type="button"
+                onClick={() => setFiltersOpen(!filtersOpen)}
+                className="w-full p-4 flex items-center justify-between hover:bg-gray-100 transition-colors lg:pointer-events-none"
+                aria-expanded={filtersOpen}
+                aria-controls="filters-content"
+              >
+                <div className="flex items-center gap-3">
+                  <h2 className="text-lg font-bold text-gray-900">Filtros</h2>
+                  {hasActiveFilters && (
+                    <span className="bg-peru-red text-white text-xs font-bold px-2 py-1 rounded-full">
+                      {regionFilters.length + categoryFilters.length + (searchQuery.trim() ? 1 : 0)}
+                    </span>
+                  )}
                 </div>
-              </div>
-
-              <div>
-                <p className="text-sm font-semibold text-gray-700 mb-2">Tipo</p>
-                <div className="flex flex-wrap gap-2">
-                  {CATEGORY_OPTIONS.map(({ value, label }) => (
-                    <button
-                      key={value}
-                      type="button"
-                      onClick={() => toggleCategory(value)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors cursor-pointer ${
-                        categoryFilters.includes(value) ? 'bg-peru-red text-white' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {hasActiveFilters && (
-                <button
-                  type="button"
-                  onClick={clearAllFilters}
-                  className="text-sm font-semibold text-peru-red hover:underline"
+                <svg
+                  className={`w-5 h-5 text-gray-600 transition-transform duration-200 lg:hidden ${filtersOpen ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  Limpiar todos los filtros
-                </button>
-              )}
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {/* Contenido de filtros - desplegable en mobile, siempre visible en desktop */}
+              <div
+                id="filters-content"
+                className={`lg:block transition-all duration-300 ease-in-out ${
+                  filtersOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden lg:max-h-none lg:opacity-100'
+                }`}
+              >
+                <div className="px-6 pb-6 space-y-5">
+                  <div>
+                    <p className="text-sm font-semibold text-gray-700 mb-2">Región</p>
+                    <div className="flex flex-wrap lg:flex-col gap-2">
+                      {REGION_OPTIONS.map(({ value, label }) => (
+                        <button
+                          key={value}
+                          type="button"
+                          onClick={() => toggleRegion(value)}
+                          className={`px-4 py-2 rounded-full lg:rounded-lg text-sm font-medium transition-colors cursor-pointer w-full lg:w-full text-center ${
+                            regionFilters.includes(value) ? 'bg-peru-red text-white' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-200'
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-semibold text-gray-700 mb-2">Tipo</p>
+                    <div className="flex flex-wrap lg:flex-col gap-2">
+                      {CATEGORY_OPTIONS.map(({ value, label }) => (
+                        <button
+                          key={value}
+                          type="button"
+                          onClick={() => toggleCategory(value)}
+                          className={`px-4 py-2 rounded-full lg:rounded-lg text-sm font-medium transition-colors cursor-pointer w-full lg:w-full text-center ${
+                            categoryFilters.includes(value) ? 'bg-peru-red text-white' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-200'
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {hasActiveFilters && (
+                    <button
+                      type="button"
+                      onClick={clearAllFilters}
+                      className="text-sm font-semibold text-peru-red hover:underline"
+                    >
+                      Limpiar todos los filtros
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Vista (grid/list) - siempre visible */}
+              <div className="px-6 py-4 border-t border-gray-200 flex flex-wrap items-center gap-4 bg-white">
+                <p className="text-sm font-semibold text-gray-700">Vista:</p>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('grid')}
+                    className={`px-4 py-2 rounded-lg font-semibold transition-colors cursor-pointer flex items-center gap-2 ${
+                      viewMode === 'grid' ? 'bg-peru-red text-white' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-200'
+                    }`}
+                    aria-label="Vista de cuadrícula"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    Cuadrícula
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('list')}
+                    className={`px-4 py-2 rounded-lg font-semibold transition-colors cursor-pointer flex items-center gap-2 ${
+                      viewMode === 'list' ? 'bg-peru-red text-white' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-200'
+                    }`}
+                    aria-label="Vista de lista"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    Lista
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Vista (grid/list) - siempre visible */}
-          <div className="px-6 py-4 border-t border-gray-200 flex flex-wrap items-center gap-4 bg-white">
-            <p className="text-sm font-semibold text-gray-700">Vista:</p>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => setViewMode('grid')}
-                className={`px-4 py-2 rounded-lg font-semibold transition-colors cursor-pointer flex items-center gap-2 ${
-                  viewMode === 'grid' ? 'bg-peru-red text-white' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-200'
-                }`}
-                aria-label="Vista de cuadrícula"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                </svg>
-                Cuadrícula
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode('list')}
-                className={`px-4 py-2 rounded-lg font-semibold transition-colors cursor-pointer flex items-center gap-2 ${
-                  viewMode === 'list' ? 'bg-peru-red text-white' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-200'
-                }`}
-                aria-label="Vista de lista"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-                Lista
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {availableDishes.length === 0 ? (
+          {/* Contenido principal: platos */}
+          <div className="flex-1 min-w-0">
+            {availableDishes.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-600 text-lg">
               No hay platos disponibles en este momento.
@@ -245,21 +292,83 @@ export default function MenuPage() {
               Limpiar filtros
             </button>
           </div>
-        ) : viewMode === 'grid' ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredDishes.map((dish, index) => (
-              <DishCard key={dish.id} dish={dish} priority={index < 6} />
-            ))}
-          </div>
         ) : (
-          <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md border border-gray-200 overflow-visible">
-            <div className="divide-y divide-gray-200">
-              {filteredDishes.map((dish) => (
-                <DishListItem key={dish.id} dish={dish} />
-              ))}
-            </div>
+          <div className="space-y-12">
+            {/* Sopas */}
+            {categorizedDishes.sopas.length > 0 && (
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-peru-red">
+                  Sopas
+                </h2>
+                {viewMode === 'grid' ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {categorizedDishes.sopas.map((dish, index) => (
+                      <DishCard key={dish.id} dish={dish} priority={index < 3} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md border border-gray-200 overflow-visible">
+                    <div className="divide-y divide-gray-200">
+                      {categorizedDishes.sopas.map((dish) => (
+                        <DishListItem key={dish.id} dish={dish} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Platos de Fondo */}
+            {categorizedDishes['platos-fondo'].length > 0 && (
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-peru-red">
+                  Platos de Fondo
+                </h2>
+                {viewMode === 'grid' ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {categorizedDishes['platos-fondo'].map((dish, index) => (
+                      <DishCard key={dish.id} dish={dish} priority={index < 3} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md border border-gray-200 overflow-visible">
+                    <div className="divide-y divide-gray-200">
+                      {categorizedDishes['platos-fondo'].map((dish) => (
+                        <DishListItem key={dish.id} dish={dish} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Postres */}
+            {categorizedDishes.postres.length > 0 && (
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-peru-red">
+                  Postres
+                </h2>
+                {viewMode === 'grid' ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {categorizedDishes.postres.map((dish, index) => (
+                      <DishCard key={dish.id} dish={dish} priority={index < 3} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md border border-gray-200 overflow-visible">
+                    <div className="divide-y divide-gray-200">
+                      {categorizedDishes.postres.map((dish) => (
+                        <DishListItem key={dish.id} dish={dish} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
+          </div>
+        </div>
 
         {/* Advertencias en la página del menú */}
         <div className="mt-12 max-w-4xl mx-auto space-y-3">

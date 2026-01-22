@@ -24,26 +24,28 @@ export default function Home() {
             src="/media/machu-picchu.jpg"
             alt="Machu Picchu"
             fill
-            className="object-cover"
+            className="object-cover scale-105 animate-fade-in"
             priority
             sizes="100vw"
           />
           {/* Overlay con gradiente para mejor legibilidad */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70"></div>
+          {/* Efecto de partículas animadas */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(220,20,60,0.1),transparent_50%)] animate-pulse"></div>
         </div>
         
         {/* Contenido */}
-        <div className="relative z-10 container mx-auto px-4 text-center">
+        <div className="relative z-10 container mx-auto px-4 text-center animate-fade-in-up">
           {/* Logo grande y elegante */}
           <div className="mb-8 flex justify-center">
             <div className="flex flex-col items-center space-y-4">
               {/* Versión grande del logo */}
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 animate-scale-in">
                 {/* Icono del logo grande */}
-                <div className="relative">
-                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-peru-red via-red-600 to-red-700 flex items-center justify-center shadow-2xl">
+                <div className="relative group">
+                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-peru-red via-red-600 to-red-700 flex items-center justify-center shadow-2xl transform transition-all duration-500 hover:scale-110 hover:rotate-3">
                     <svg
-                      className="w-12 h-12 md:w-14 md:h-14 text-white"
+                      className="w-12 h-12 md:w-14 md:h-14 text-white transform transition-transform duration-300 group-hover:scale-110"
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="2"
@@ -55,14 +57,14 @@ export default function Home() {
                       <path d="M9 12h6M9 15h6" strokeWidth="1.5" opacity="0.6"/>
                     </svg>
                   </div>
-                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-peru-gold rounded-full border-3 border-white shadow-lg"></div>
+                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-peru-gold rounded-full border-3 border-white shadow-lg animate-pulse"></div>
                 </div>
                 
                 {/* Texto del logo grande */}
                 <div className="flex flex-col text-left">
-                  <span className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-2xl">
+                  <span className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-2xl transform transition-all duration-300 hover:scale-105">
                     <span className="text-white">PERU</span>
-                    <span className="text-peru-gold">FLAVOR</span>
+                    <span className="text-peru-gold bg-gradient-to-r from-peru-gold to-yellow-400 bg-clip-text text-transparent">FLAVOR</span>
                   </span>
                   <span className="text-sm md:text-base text-white/90 font-semibold tracking-[0.2em] uppercase mt-1 drop-shadow-lg">
                     Comida Casera
@@ -73,10 +75,10 @@ export default function Home() {
           </div>
           
           {/* Tagline */}
-          <p className="text-xl md:text-2xl lg:text-3xl mb-4 text-white font-semibold drop-shadow-lg">
+          <p className="text-xl md:text-2xl lg:text-3xl mb-4 text-white font-semibold drop-shadow-lg animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             {siteConfig.tagline}
           </p>
-          <p className="text-base md:text-lg lg:text-xl mb-10 text-white/90 drop-shadow-md max-w-2xl mx-auto">
+          <p className="text-base md:text-lg lg:text-xl mb-10 text-white/90 drop-shadow-md max-w-2xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
             Pickup o Delivery · Hecho en casa con la mejor sazón peruana
           </p>
           
@@ -85,19 +87,21 @@ export default function Home() {
             href={getWhatsAppUrl(getMenuWhatsAppMessage())}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary bg-white text-peru-red hover:bg-gray-100 text-lg md:text-xl px-10 py-4 md:px-12 md:py-5 inline-block shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 font-bold"
+            className="bg-white text-peru-red hover:bg-gray-100 text-lg md:text-xl px-10 py-4 md:px-12 md:py-5 inline-block shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 font-bold relative overflow-hidden group animate-fade-in-up rounded-lg"
+            style={{ animationDelay: '0.6s' }}
           >
-            Ordenar por WhatsApp
+            <span className="relative z-10">Ordenar por WhatsApp</span>
+            <span className="absolute inset-0 bg-gradient-to-r from-peru-red/10 to-red-600/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
           </a>
         </div>
       </section>
 
       {/* Platos del Día */}
       {dishesOfTheDay.length > 0 && (
-        <section className="py-12 md:py-16 bg-gray-50">
+        <section className="py-12 md:py-16 bg-gradient-to-b from-gray-50 via-white to-gray-50">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            <div className="text-center mb-8 animate-fade-in-up">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2 bg-gradient-to-r from-peru-red to-red-600 bg-clip-text text-transparent">
                 Platos del Día
               </h2>
               <p className="text-gray-600">
@@ -233,7 +237,7 @@ export default function Home() {
             href={getWhatsAppUrl(getMenuWhatsAppMessage())}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary bg-white text-peru-red hover:bg-gray-100 text-lg px-8 py-4 inline-block"
+            className="bg-white text-peru-red hover:bg-gray-100 text-lg px-8 py-4 inline-block rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-peru-red"
           >
             Ordenar por WhatsApp
           </a>

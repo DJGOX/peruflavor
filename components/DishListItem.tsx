@@ -10,8 +10,8 @@ interface DishListItemProps {
 
 export default function DishListItem({ dish }: DishListItemProps) {
   return (
-    <div className="flex items-center justify-between p-4 border-b border-gray-200 hover:bg-gray-50 transition-colors">
-      <div className="flex-1">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
+      <div className="flex-1 min-w-0">
         <Link 
           href={`/menu/${dish.id}`}
           className="text-lg font-semibold text-gray-900 hover:text-peru-red transition-colors"
@@ -29,25 +29,24 @@ export default function DishListItem({ dish }: DishListItemProps) {
             {dish.peruRegion}
           </span>
         )}
-        {dish.isDishOfTheDay && (
-          <span className="ml-2 px-2 py-0.5 rounded-full text-xs font-bold bg-peru-red text-white">
-            Plato del Día
-          </span>
-        )}
       </div>
-      
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-3 sm:gap-4 flex-shrink-0">
         {dish.id === 'picarones' ? (
           <div className="text-right">
-            <div className="text-lg font-bold text-peru-red">6: {formatPrice(12, dish.currency)}</div>
-            <div className="text-lg font-bold text-peru-red">8: {formatPrice(18, dish.currency)}</div>
+            <span className="text-xl font-bold text-peru-red">{formatPrice(dish.price!, dish.currency)}</span>
+            <div className="text-xs text-gray-500">6 piezas</div>
+          </div>
+        ) : dish.id === 'tallarines-rojos-huancaina' ? (
+          <div className="text-right">
+            <div className="text-lg font-bold text-peru-red">{formatPrice(20, dish.currency)} / {formatPrice(25, dish.currency)}</div>
+            <div className="text-xs text-gray-500">+ cevichito / + chanfainita</div>
           </div>
         ) : dish.price ? (
           <span className="text-xl font-bold text-peru-red whitespace-nowrap">
             {formatPrice(dish.price, dish.currency)}
           </span>
         ) : (
-          <span className="text-gray-400 text-sm">Consultar precio</span>
+          <span className="text-amber-600 text-sm font-semibold">Consultar</span>
         )}
         
         <a
@@ -56,7 +55,7 @@ export default function DishListItem({ dish }: DishListItemProps) {
           rel="noopener noreferrer"
           className="btn-primary text-sm px-4 py-2 whitespace-nowrap"
         >
-          Pedir
+          {dish.tags?.includes('Consultar') ? 'Consultar' : 'Pedir'}
         </a>
       </div>
     </div>

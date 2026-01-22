@@ -5,9 +5,9 @@ import Logo from './Logo'
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white mt-20">
+    <footer className="bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white mt-20 border-t border-gray-700">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 animate-fade-in-up">
           <div>
             <div className="mb-4">
               <Logo className="justify-start" />
@@ -25,7 +25,7 @@ export default function Footer() {
                   href={getWhatsAppUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-peru-red transition-colors"
+                  className="hover:text-peru-red transition-all duration-300 hover:translate-x-1 inline-block"
                 >
                   WhatsApp: {siteConfig.contact.whatsappFormatted}
                 </a>

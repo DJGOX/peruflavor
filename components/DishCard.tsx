@@ -18,31 +18,28 @@ export default function DishCard({ dish, priority = false }: DishCardProps) {
     'Popular': 'tag-popular',
     'Vegetariano': 'tag-vegetariano',
     'Disponible hoy': 'tag-disponible',
+    'Consultar': 'tag-consultar',
   }
 
   return (
-    <div className="card h-full flex flex-col">
-      <Link href={`/menu/${dish.id}`} className="block relative h-48 overflow-hidden bg-gray-100">
+    <div className="card-hover h-full flex flex-col group animate-fade-in-up">
+      <Link href={`/menu/${dish.id}`} className="block relative h-48 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
         <ImageWithFallback
           src={dish.images[0] || '/placeholder.jpg'}
           alt={dish.name}
           fill
-          className="object-contain hover:scale-105 transition-transform duration-300"
+          className="object-contain group-hover:scale-110 transition-transform duration-500 ease-out"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority={priority}
         />
-        {dish.isDishOfTheDay && (
-          <div className="absolute top-2 right-2 bg-peru-red text-white px-3 py-1 rounded-full text-xs font-bold">
-            Plato del Día
-          </div>
-        )}
         {dish.peruRegion && (
-          <div className={`absolute top-2 left-2 px-2 py-1 rounded-full text-xs font-semibold ${
-            dish.peruRegion === 'Costa' ? 'bg-blue-500 text-white' :
-            dish.peruRegion === 'Sierra' ? 'bg-green-600 text-white' :
-            dish.peruRegion === 'Selva' ? 'bg-emerald-600 text-white' :
-            dish.peruRegion === 'Costa y Sierra' ? 'bg-purple-500 text-white' :
-            'bg-gray-600 text-white'
+          <div className={`absolute top-2 left-2 px-3 py-1.5 rounded-full text-xs font-semibold z-20 backdrop-blur-sm shadow-lg transition-all duration-300 group-hover:scale-110 ${
+            dish.peruRegion === 'Costa' ? 'bg-blue-500/90 text-white' :
+            dish.peruRegion === 'Sierra' ? 'bg-green-600/90 text-white' :
+            dish.peruRegion === 'Selva' ? 'bg-emerald-600/90 text-white' :
+            dish.peruRegion === 'Costa y Sierra' ? 'bg-purple-500/90 text-white' :
+            'bg-gray-600/90 text-white'
           }`}>
             {dish.peruRegion}
           </div>
@@ -56,14 +53,21 @@ export default function DishCard({ dish, priority = false }: DishCardProps) {
           </Link>
           {dish.id === 'picarones' ? (
             <div className="text-right ml-2 whitespace-nowrap">
-              <div className="text-sm font-semibold text-peru-red">Desde {formatPrice(12, dish.currency)}</div>
-              <div className="text-xs text-gray-500">6 o 8 piezas</div>
+              <span className="text-lg font-bold text-peru-red">{formatPrice(dish.price!, dish.currency)}</span>
+              <div className="text-xs text-gray-500">6 piezas</div>
+            </div>
+          ) : dish.id === 'tallarines-rojos-huancaina' ? (
+            <div className="text-right ml-2 whitespace-nowrap">
+              <div className="text-xs text-gray-600">+ cevichito: <span className="font-bold text-peru-red">{formatPrice(20, dish.currency)}</span></div>
+              <div className="text-xs text-gray-600">+ chanfainita: <span className="font-bold text-peru-red">{formatPrice(25, dish.currency)}</span></div>
             </div>
           ) : dish.price ? (
             <span className="text-lg font-bold text-peru-red ml-2 whitespace-nowrap">
               {formatPrice(dish.price, dish.currency)}
             </span>
-          ) : null}
+          ) : (
+            <span className="text-sm font-semibold text-amber-600 ml-2 whitespace-nowrap">Consultar</span>
+          )}
         </div>
 
         <p className="text-sm text-gray-600 mb-3 line-clamp-2 flex-grow">
@@ -71,7 +75,7 @@ export default function DishCard({ dish, priority = false }: DishCardProps) {
         </p>
 
         <div className="flex flex-wrap gap-2 mb-3">
-          {dish.tags.slice(0, 3).map((tag) => (
+          {dish.tags.filter(tag => tag !== 'Disponible hoy').slice(0, 3).map((tag) => (
             <span key={tag} className={tagClassMap[tag] || 'tag bg-gray-100 text-gray-800'}>
               {tag}
             </span>
@@ -82,9 +86,10 @@ export default function DishCard({ dish, priority = false }: DishCardProps) {
           href={getWhatsAppUrl(getDishWhatsAppMessage(dish))}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-primary w-full text-center text-sm py-2 mt-auto"
+          className="btn-primary w-full text-center text-sm py-2.5 mt-auto relative overflow-hidden group"
         >
-          Pedir por WhatsApp
+          <span className="relative z-10">{dish.tags?.includes('Consultar') ? 'Consultar por WhatsApp' : 'Pedir por WhatsApp'}</span>
+          <span className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
         </a>
       </div>
     </div>
