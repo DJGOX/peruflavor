@@ -104,9 +104,24 @@ export default function Home() {
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2 bg-gradient-to-r from-peru-red to-red-600 bg-clip-text text-transparent">
                 Platos del Día
               </h2>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-4">
                 Especialidades disponibles hoy
               </p>
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-4 md:p-6 max-w-3xl mx-auto shadow-lg">
+                <p className="text-sm md:text-base text-gray-700 mb-2">
+                  <strong className="text-green-700">📱 Para conocer los Platos del Día:</strong>
+                </p>
+                <ul className="text-sm md:text-base text-gray-700 space-y-1 text-left max-w-2xl mx-auto">
+                  <li className="flex items-start">
+                    <span className="mr-2">✓</span>
+                    <span>Revisa los <strong className="text-green-700">estados de WhatsApp</strong> del número <strong className="text-peru-red">{siteConfig.contact.whatsappFormatted}</strong></span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2">✓</span>
+                    <span>O <a href={getWhatsAppUrl('Hola, ¿cuáles son los platos del día de hoy?')} target="_blank" rel="noopener noreferrer" className="text-peru-red font-semibold hover:underline">consulta directamente por WhatsApp</a></span>
+                  </li>
+                </ul>
+              </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {dishesOfTheDay.map((dish, index) => (

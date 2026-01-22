@@ -114,9 +114,25 @@ export default function MenuPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Nuestro Menú
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
             Descubre nuestros platos tradicionales peruanos, hechos con amor y los mejores ingredientes.
           </p>
+          {/* Información sobre Platos del Día */}
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-4 md:p-5 max-w-3xl mx-auto shadow-md mb-8">
+            <p className="text-sm md:text-base text-gray-700 mb-2">
+              <strong className="text-green-700">📱 ¿Quieres saber cuáles son los Platos del Día?</strong>
+            </p>
+            <ul className="text-sm md:text-base text-gray-700 space-y-1">
+              <li className="flex items-center justify-center">
+                <span className="mr-2">✓</span>
+                <span>Revisa los <strong className="text-green-700">estados de WhatsApp</strong> del número <strong className="text-peru-red">{siteConfig.contact.whatsappFormatted}</strong></span>
+              </li>
+              <li className="flex items-center justify-center">
+                <span className="mr-2">✓</span>
+                <span>O <a href={getWhatsAppUrl('Hola, ¿cuáles son los platos del día de hoy?')} target="_blank" rel="noopener noreferrer" className="text-peru-red font-semibold hover:underline">consulta directamente por WhatsApp</a></span>
+              </li>
+            </ul>
+          </div>
 
           {/* Buscador */}
           <div className="max-w-xl mx-auto mb-6 flex flex-col sm:flex-row gap-2">
