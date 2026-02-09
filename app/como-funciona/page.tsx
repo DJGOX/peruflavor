@@ -1,8 +1,9 @@
 import { getWhatsAppUrl, getMenuWhatsAppMessage } from '@/lib/utils'
+import { siteConfig } from '@/data/config'
 
 export const metadata = {
   title: 'Cómo funciona',
-  description: 'Aprende cómo ordenar comida peruana casera en Peruflavor. Proceso simple en 3 pasos.',
+  description: `Aprende cómo ordenar comida peruana casera en ${siteConfig.name}. Proceso simple en 3 pasos.`,
 }
 
 export default function HowItWorksPage() {

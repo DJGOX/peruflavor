@@ -5,6 +5,8 @@ import { siteConfig } from '@/data/config'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import WhatsAppButton from '@/components/WhatsAppButton'
+import CartButton from '@/components/CartButton'
+import Providers from '@/components/Providers'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
@@ -76,10 +78,13 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-white text-gray-900 antialiased">
-        <Header />
-        <main className="pt-16">{children}</main>
-        <Footer />
-        <WhatsAppButton />
+        <Providers>
+          <Header />
+          <main className="pt-16">{children}</main>
+          <Footer />
+          <CartButton />
+          <WhatsAppButton />
+        </Providers>
       </body>
     </html>
   )

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Dish } from '@/types'
 import { formatPrice, getDishWhatsAppMessage, getWhatsAppUrl } from '@/lib/utils'
+import { useCart } from '@/context/CartContext'
 import { getDishTranslations } from '@/lib/translations'
 import ImageWithFallback from './ImageWithFallback'
 import ImageLightbox from './ImageLightbox'
@@ -12,6 +13,7 @@ interface DishDetailContentProps {
 }
 
 export default function DishDetailContent({ dish }: DishDetailContentProps) {
+  const { addItem } = useCart()
   const [language, setLanguage] = useState<'es' | 'en'>('es')
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
@@ -269,8 +271,15 @@ export default function DishDetailContent({ dish }: DishDetailContentProps) {
               </div>
             )}
 
-            {/* CTA Button */}
-            <div className="mt-8 pt-6 border-t-2 border-gray-200">
+            {/* CTA Buttons */}
+            <div className="mt-8 pt-6 border-t-2 border-gray-200 space-y-3">
+              <button
+                type="button"
+                onClick={() => addItem(dish)}
+                className="w-full py-4 md:py-5 rounded-xl font-bold text-lg border-2 border-peru-red text-peru-red hover:bg-peru-red hover:text-white transition-colors"
+              >
+                {isEnglish ? 'Add to order' : 'Agregar a la orden'}
+              </button>
               <a
                 href={getWhatsAppUrl(getDishWhatsAppMessage(dish))}
                 target="_blank"

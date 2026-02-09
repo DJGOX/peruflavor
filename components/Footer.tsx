@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { siteConfig } from '@/data/config'
-import { getWhatsAppUrl } from '@/lib/utils'
+import { getWhatsAppUrl, getBandejasWhatsAppMessage } from '@/lib/utils'
 import Logo from './Logo'
 
 export default function Footer() {
@@ -28,6 +28,16 @@ export default function Footer() {
                   className="hover:text-peru-red transition-all duration-300 hover:translate-x-1 inline-block"
                 >
                   WhatsApp: {siteConfig.contact.whatsappFormatted}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={getWhatsAppUrl(getBandejasWhatsAppMessage())}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-peru-red transition-all duration-300 hover:translate-x-1 inline-block"
+                >
+                  🍽️ Bandejas para eventos
                 </a>
               </li>
               <li className="text-gray-400">

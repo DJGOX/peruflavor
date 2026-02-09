@@ -3,12 +3,14 @@
 import Link from 'next/link'
 import { Dish } from '@/types'
 import { formatPrice, getDishWhatsAppMessage, getWhatsAppUrl } from '@/lib/utils'
+import { useCart } from '@/context/CartContext'
 
 interface DishListItemProps {
   dish: Dish
 }
 
 export default function DishListItem({ dish }: DishListItemProps) {
+  const { addItem } = useCart()
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors">
       <div className="flex-1 min-w-0">
@@ -48,7 +50,14 @@ export default function DishListItem({ dish }: DishListItemProps) {
         ) : (
           <span className="text-amber-600 text-sm font-semibold">Consultar</span>
         )}
-        
+
+        <button
+          type="button"
+          onClick={() => addItem(dish)}
+          className="px-4 py-2 text-sm font-semibold border-2 border-peru-red text-peru-red rounded-lg hover:bg-peru-red hover:text-white transition-colors whitespace-nowrap"
+        >
+          Agregar
+        </button>
         <a
           href={getWhatsAppUrl(getDishWhatsAppMessage(dish))}
           target="_blank"

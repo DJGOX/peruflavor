@@ -1,5 +1,5 @@
 import { siteConfig } from '@/data/config'
-import { getWhatsAppUrl, getMenuWhatsAppMessage, getEventsWhatsAppMessage } from '@/lib/utils'
+import { getWhatsAppUrl, getMenuWhatsAppMessage, getEventsWhatsAppMessage, getBandejasWhatsAppMessage } from '@/lib/utils'
 
 export const metadata = {
   title: 'Contacto',
@@ -70,26 +70,44 @@ export default function ContactPage() {
           </p>
         </div>
 
-        <div className="card p-6 bg-gradient-to-br from-red-50 to-white border-2 border-peru-red">
-          <div className="text-center mb-4">
-            <div className="text-4xl mb-3">🎉</div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Órdenes Grandes para Eventos
-            </h2>
-            <p className="text-gray-700 mb-4">
-              Aceptamos órdenes grandes para bodas, cumpleaños, eventos sociales y más.
-            </p>
-            <p className="text-gray-600 text-sm mb-6">
-              Contáctanos para cotizaciones personalizadas y coordinación de tu evento especial.
-            </p>
-            <a
-              href={getWhatsAppUrl(getEventsWhatsAppMessage())}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary inline-block"
-            >
-              Consultar para Eventos
-            </a>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="card p-6 bg-gradient-to-br from-red-50 to-white border-2 border-peru-red">
+            <div className="text-center mb-4">
+              <div className="text-4xl mb-3">🎉</div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Órdenes Grandes para Eventos
+              </h2>
+              <p className="text-gray-700 mb-4">
+                Bodas, cumpleaños, eventos sociales y más. Cotizaciones personalizadas.
+              </p>
+              <a
+                href={getWhatsAppUrl(getEventsWhatsAppMessage())}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary inline-block"
+              >
+                Consultar para Eventos
+              </a>
+            </div>
+          </div>
+          <div className="card p-6 bg-gradient-to-br from-amber-50 to-white border-2 border-peru-red">
+            <div className="text-center mb-4">
+              <div className="text-4xl mb-3">🍽️</div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Bandejas para Eventos
+              </h2>
+              <p className="text-gray-700 mb-4">
+                ¿Necesitas ordenar por bandejas? Consulta opciones, precios y cantidades.
+              </p>
+              <a
+                href={getWhatsAppUrl(getBandejasWhatsAppMessage())}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 font-bold border-2 border-peru-red text-peru-red px-6 py-3 rounded-lg hover:bg-peru-red hover:text-white transition-colors"
+              >
+                Ordenar por Bandejas
+              </a>
+            </div>
           </div>
         </div>
 

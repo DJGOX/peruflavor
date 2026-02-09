@@ -34,11 +34,10 @@ export default function Logo({ className = '' }: LogoProps) {
       {/* Texto del logo */}
       <div className="flex flex-col">
         <span className="text-xl md:text-2xl font-bold text-gray-900 leading-tight tracking-tight">
-          <span className="text-peru-red">PERU</span>
-          <span className="text-gray-700">FLAVOR</span>
+          <span className="text-peru-red">{siteConfig.name}</span>
         </span>
         <span className="text-[9px] md:text-[10px] text-gray-500 font-semibold tracking-[0.15em] uppercase mt-0.5">
-          Comida Casera
+          {siteConfig.tagline}
         </span>
       </div>
     </Link>

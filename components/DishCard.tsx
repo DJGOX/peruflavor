@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { Dish } from '@/types'
 import { formatPrice, getDishWhatsAppMessage, getWhatsAppUrl } from '@/lib/utils'
+import { useCart } from '@/context/CartContext'
 import ImageWithFallback from './ImageWithFallback'
 
 interface DishCardProps {
@@ -11,6 +12,7 @@ interface DishCardProps {
 }
 
 export default function DishCard({ dish, priority = false }: DishCardProps) {
+  const { addItem } = useCart()
   const tagClassMap: Record<string, string> = {
     'Picante': 'tag-picante',
     'Nuevo': 'tag-nuevo',
@@ -82,15 +84,26 @@ export default function DishCard({ dish, priority = false }: DishCardProps) {
           ))}
         </div>
 
-        <a
-          href={getWhatsAppUrl(getDishWhatsAppMessage(dish))}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-primary w-full text-center text-sm py-2.5 mt-auto relative overflow-hidden group"
-        >
-          <span className="relative z-10">{dish.tags?.includes('Consultar') ? 'Consultar por WhatsApp' : 'Pedir por WhatsApp'}</span>
-          <span className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-        </a>
+        <div className="flex gap-2 mt-auto">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              addItem(dish)
+            }}
+            className="flex-1 py-2.5 px-3 rounded-lg font-semibold text-sm bg-peru-red text-white hover:bg-red-700 transition-colors border-2 border-peru-red"
+          >
+            Agregar a la orden
+          </button>
+          <a
+            href={getWhatsAppUrl(getDishWhatsAppMessage(dish))}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 btn-primary text-center text-sm py-2.5 relative overflow-hidden group"
+          >
+            <span className="relative z-10">{dish.tags?.includes('Consultar') ? 'Consultar' : 'Pedir ya'}</span>
+          </a>
+        </div>
       </div>
     </div>
   )

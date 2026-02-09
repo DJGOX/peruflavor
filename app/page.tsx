@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { siteConfig } from '@/data/config'
 import { dishes } from '@/data/dishes'
-import { getDishesOfTheDay, getWhatsAppUrl, getMenuWhatsAppMessage, getEventsWhatsAppMessage } from '@/lib/utils'
+import { getDishesOfTheDay, getWhatsAppUrl, getMenuWhatsAppMessage, getEventsWhatsAppMessage, getBandejasWhatsAppMessage } from '@/lib/utils'
 import DishCard from '@/components/DishCard'
 import Logo from '@/components/Logo'
 
@@ -36,11 +36,10 @@ export default function Home() {
         
         {/* Contenido */}
         <div className="relative z-10 container mx-auto px-4 text-center animate-fade-in-up">
-          {/* Logo grande y elegante */}
+          {/* Logo grande y elegante - centrado */}
           <div className="mb-8 flex justify-center">
-            <div className="flex flex-col items-center space-y-4">
-              {/* Versión grande del logo */}
-              <div className="flex items-center space-x-4 animate-scale-in">
+            <div className="flex flex-col items-center space-y-4 animate-scale-in">
+              <div className="flex items-center justify-center space-x-4">
                 {/* Icono del logo grande */}
                 <div className="relative group">
                   <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-peru-red via-red-600 to-red-700 flex items-center justify-center shadow-2xl transform transition-all duration-500 hover:scale-110 hover:rotate-3">
@@ -59,17 +58,9 @@ export default function Home() {
                   </div>
                   <div className="absolute -top-1 -right-1 w-5 h-5 bg-peru-gold rounded-full border-3 border-white shadow-lg animate-pulse"></div>
                 </div>
-                
-                {/* Texto del logo grande */}
-                <div className="flex flex-col text-left">
-                  <span className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-2xl transform transition-all duration-300 hover:scale-105">
-                    <span className="text-white">PERU</span>
-                    <span className="text-peru-gold bg-gradient-to-r from-peru-gold to-yellow-400 bg-clip-text text-transparent">FLAVOR</span>
-                  </span>
-                  <span className="text-sm md:text-base text-white/90 font-semibold tracking-[0.2em] uppercase mt-1 drop-shadow-lg">
-                    Comida Casera
-                  </span>
-                </div>
+                <span className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-2xl transform transition-all duration-300 hover:scale-105 text-peru-gold bg-gradient-to-r from-peru-gold to-yellow-400 bg-clip-text text-transparent">
+                  {siteConfig.name}
+                </span>
               </div>
             </div>
           </div>
@@ -205,7 +196,7 @@ export default function Home() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <div className="p-4 bg-red-50 rounded-lg">
                 <div className="text-3xl mb-2">💒</div>
                 <h3 className="font-semibold text-gray-900 mb-2">Bodas</h3>
@@ -221,20 +212,36 @@ export default function Home() {
                 <h3 className="font-semibold text-gray-900 mb-2">Eventos Sociales</h3>
                 <p className="text-sm text-gray-600">Y mucho más para tus celebraciones</p>
               </div>
+              <div className="p-4 bg-red-50 rounded-lg border-2 border-peru-red">
+                <div className="text-3xl mb-2">🍽️</div>
+                <h3 className="font-semibold text-gray-900 mb-2">Bandejas</h3>
+                <p className="text-sm text-gray-600">Ordena por bandejas para tus eventos</p>
+              </div>
             </div>
 
             <p className="text-gray-700 mb-6">
               Contáctanos por WhatsApp para cotizaciones personalizadas y coordinación de tu evento.
             </p>
             
-            <a
-              href={getWhatsAppUrl(getEventsWhatsAppMessage())}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary text-lg px-8 py-4 inline-block"
-            >
-              Consultar para Eventos
-            </a>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <a
+                href={getWhatsAppUrl(getEventsWhatsAppMessage())}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary text-lg px-8 py-4 inline-block"
+              >
+                Consultar para Eventos
+              </a>
+              <a
+                href={getWhatsAppUrl(getBandejasWhatsAppMessage())}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-lg px-8 py-4 font-bold border-2 border-peru-red text-peru-red rounded-lg hover:bg-peru-red hover:text-white transition-colors"
+              >
+                <span>🍽️</span>
+                Ordenar por Bandejas
+              </a>
+            </div>
           </div>
         </div>
       </section>

@@ -1,14 +1,18 @@
 import { Dish } from '@/types'
 import { siteConfig } from '@/data/config'
 
-export type DishCategory = 'Dulce' | 'Salado' | 'Sopas' | 'Picante' | 'Postres'
+export type DishCategory = 'Dulce' | 'Salado' | 'Sopas' | 'Picante' | 'Postres' | 'Pescados y mariscos'
 export type RegionFilter = 'Costa' | 'Sierra' | 'Selva'
 
 const SOUP_IDS = new Set([
   'sopa-semola', 'sopa-trigo', 'crema-arveja', 'patasca', 'sopa-minuta',
-  'sopa-criolla-sustancia', 'sopa-dieta', 'caldo-gallina', 'parihuela-mixta',
+  'sopa-criolla-sustancia', 'sopa-sustancia', 'sopa-mote', 'sopa-dieta', 'caldo-gallina', 'parihuela-mixta',
 ])
 const DESSERT_IDS = new Set(['picarones', 'combinado-mazamorra-arroz'])
+const SEAFOOD_IDS = new Set([
+  'ceviche', 'ceviche-mixto', 'ceviche-conchas-negras', 'leche-tigre', 'pescado-frito', 'pescado-macho',
+  'jalea-mixta', 'chaufa-mariscos', 'arroz-mariscos', 'parihuela-mixta', 'trio-marino', 'causa-chiclayana-ceviche',
+])
 
 export function getDishCategories(dish: Dish): DishCategory[] {
   const cats: DishCategory[] = []
@@ -19,6 +23,7 @@ export function getDishCategories(dish: Dish): DishCategory[] {
   }
   if (SOUP_IDS.has(dish.id)) cats.push('Sopas')
   if (dish.tags?.includes('Picante')) cats.push('Picante')
+  if (SEAFOOD_IDS.has(dish.id)) cats.push('Pescados y mariscos')
   return cats
 }
 
@@ -63,8 +68,38 @@ export function getMenuWhatsAppMessage(): string {
   return 'Hola, quiero ver el menú de hoy. ¿Qué platos tienen disponibles?'
 }
 
+export function getOrderWhatsAppMessage(
+  items: { dish: Dish; quantity: number }[]
+): string {
+  if (items.length === 0) return getMenuWhatsAppMessage()
+  const currency = items[0]?.dish.currency ?? 'USD'
+  const lines = items.map(({ dish, quantity }) => {
+    const priceStr = dish.price
+      ? formatPrice(dish.price * quantity, currency)
+      : 'Consultar precio'
+    return `${quantity}x ${dish.name} - ${priceStr}`
+  })
+  const total = items.reduce((sum, { dish, quantity }) => {
+    return sum + (dish.price ?? 0) * quantity
+  })
+  const hasConsultar = items.some(
+    (i) => !i.dish.price && i.dish.tags?.includes('Consultar')
+  )
+  let msg = 'Hola, quisiera hacer el siguiente pedido:\n\n'
+  msg += lines.join('\n')
+  if (!hasConsultar && total > 0) {
+    msg += `\n\nTotal estimado: ${formatPrice(total, currency)}`
+  }
+  msg += '\n\n¿Pueden confirmar disponibilidad y realizar el pedido?'
+  return msg
+}
+
 export function getEventsWhatsAppMessage(): string {
   return 'Hola, estoy interesado en hacer una orden grande para un evento (boda, cumpleaños, evento social). ¿Podrían ayudarme con más información?'
+}
+
+export function getBandejasWhatsAppMessage(): string {
+  return 'Hola, estoy interesado en ordenar bandejas para mi evento. ¿Podrían darme más información sobre opciones, precios y cantidades?'
 }
 
 export function formatPrice(price: number, currency: string = 'USD'): string {

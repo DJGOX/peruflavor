@@ -26,6 +26,7 @@ const CATEGORY_OPTIONS: { value: DishCategory; label: string }[] = [
   { value: 'Sopas', label: 'Sopas' },
   { value: 'Picante', label: 'Picantes' },
   { value: 'Postres', label: 'Postres' },
+  { value: 'Pescados y mariscos', label: 'Pescados y mariscos' },
 ]
 
 export default function MenuPage() {

@@ -1,11 +1,10 @@
 import { notFound } from 'next/navigation'
 import { dishes } from '@/data/dishes'
+import { siteConfig } from '@/data/config'
 import DishDetailContent from '@/components/DishDetailContent'
 
 interface PageProps {
-  params: {
-    id: string
-  }
+  params: Promise<{ id: string }>
 }
 
 export async function generateStaticParams() {
@@ -15,7 +14,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const dish = dishes.find((d) => d.id === params.id)
+  const { id } = await params
+  const dish = dishes.find((d) => d.id === id)
   
   if (!dish) {
     return {
@@ -27,15 +27,16 @@ export async function generateMetadata({ params }: PageProps) {
     title: dish.name,
     description: dish.description,
     openGraph: {
-      title: `${dish.name} - Peruflavor`,
+      title: `${dish.name} - ${siteConfig.name}`,
       description: dish.description,
       images: dish.images.length > 0 ? [dish.images[0]] : [],
     },
   }
 }
 
-export default function DishDetailPage({ params }: PageProps) {
-  const dish = dishes.find((d) => d.id === params.id)
+export default async function DishDetailPage({ params }: PageProps) {
+  const { id } = await params
+  const dish = dishes.find((d) => d.id === id)
 
   if (!dish) {
     notFound()
