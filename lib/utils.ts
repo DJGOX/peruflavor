@@ -81,7 +81,7 @@ export function getOrderWhatsAppMessage(
   })
   const total = items.reduce((sum, { dish, quantity }) => {
     return sum + (dish.price ?? 0) * quantity
-  })
+  }, 0)
   const hasConsultar = items.some(
     (i) => !i.dish.price && i.dish.tags?.includes('Consultar')
   )

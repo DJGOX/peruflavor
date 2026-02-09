@@ -17,7 +17,7 @@ export interface Dish {
   isDishOfTheDay?: boolean
 }
 
-export type DishTag = 'Picante' | 'Nuevo' | 'Clásico' | 'Disponible hoy' | 'Popular' | 'Vegetariano' | 'Consultar'
+export type DishTag = 'Picante' | 'Nuevo' | 'Clásico' | 'Disponible hoy' | 'Popular' | 'Vegetariano' | 'Consultar' | 'A la carta' | 'Combo'
 
 export interface ContactInfo {
   whatsapp: string
